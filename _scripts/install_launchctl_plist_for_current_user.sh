@@ -50,8 +50,6 @@ cat >"${server_plist_path}" <<EOL
     <string>${server_log_file_path}</string>
     <key>StandardErrorPath</key>
     <string>${server_log_file_path}</string>
-    <key>Debug</key>
-    <true/>
     <key>KeepAlive</key>
     <true/>
 </dict>
