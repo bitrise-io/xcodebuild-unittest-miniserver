@@ -55,26 +55,19 @@ func ExecuteBuildWithParams(buildParams BuildParams) error {
 		return err
 	}
 
-	buildCmd := fmt.Sprintf(`%s %s %s -scheme %s -destination "%s" -sdk iphonesimulator clean test CODE_SIGN_IDENTITY="%s" PROVISIONING_PROFILE="%s" OTHER_CODE_SIGN_FLAGS="--keychain %s"`,
+	buildCmd := fmt.Sprintf(`%s %s "%s" -scheme "%s" -destination "%s" -sdk iphonesimulator clean test CODE_SIGN_IDENTITY="%s" OTHER_CODE_SIGN_FLAGS="--keychain %s"`,
 		buildParams.BuildTool,
 		projActionArg,
 		buildParams.ProjectFile,
 		buildParams.SchemeName,
 		buildParams.DeviceDestination,
 		buildParams.CodeSignIdentity,
-		buildParams.ProvisioningProfile,
 		buildParams.KeychainName)
-
-	// cargs := []string{
-	// 	projActionArg, buildParams.ProjectFile,
-	// 	"-scheme", buildParams.SchemeName,
-	// 	"-destination", buildParams.DeviceDestination,
-	// 	"-sdk", "iphonesimulator",
-	// 	"clean", "test",
-	// 	fmt.Sprintf("CODE_SIGN_IDENTITY='%s'", buildParams.CodeSignIdentity),
-	// 	fmt.Sprintf("PROVISIONING_PROFILE='%s'", buildParams.ProvisioningProfile),
-	// 	fmt.Sprintf("OTHER_CODE_SIGN_FLAGS='--keychain %s'", buildParams.KeychainName),
-	// }
+	if buildParams.ProvisioningProfile != "" {
+		buildCmd = fmt.Sprintf(`%s PROVISIONING_PROFILE="%s"`,
+			buildCmd,
+			buildParams.ProvisioningProfile)
+	}
 
 	cargs := []string{
 		"--login",

@@ -85,9 +85,6 @@ func (bparam BuildParams) Validate() error {
 	if bparam.CodeSignIdentity == "" {
 		return errors.New("Parameter is not defined: CodeSignIdentity")
 	}
-	if bparam.ProvisioningProfile == "" {
-		return errors.New("Parameter is not defined: ProvisioningProfile")
-	}
 	if bparam.KeychainName == "" {
 		return errors.New("Parameter is not defined: KeychainName")
 	}

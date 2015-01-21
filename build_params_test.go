@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func MergeBuildParamsTest(t *testing.T) {
+func TestMergeBuildParams(t *testing.T) {
 	bp1 := BuildParams{
 		ProjectFileDir:      "pfd1",
 		BuildTool:           "bt1",
@@ -27,5 +27,37 @@ func MergeBuildParamsTest(t *testing.T) {
 
 	if mergedBuildParams.ProjectFileDir != bp1.ProjectFileDir {
 		t.Error("Merge failed: ProjectFileDir")
+	}
+}
+
+func TestValidate(t *testing.T) {
+	// valid BuildParams
+	bParams := BuildParams{
+		ProjectFileDir:      "pfd1",
+		BuildTool:           "bt1",
+		ProjectFile:         "pf1",
+		SchemeName:          "sn1",
+		DeviceDestination:   "dd1",
+		BuildOutputFilePath: "bofp1",
+		CodeSignIdentity:    "sign-identity",
+		KeychainName:        "keychain-name",
+		KeychainPassword:    "keychain-psw",
+		ProvisioningProfile: "prov-profile",
+	}
+
+	if err := bParams.Validate(); err != nil {
+		t.Error("BuildParams should be valid but got: ", err)
+	}
+
+	// remove ProvProfile - should be still valid (it's optional)
+	bParams.ProvisioningProfile = ""
+	if err := bParams.Validate(); err != nil {
+		t.Error("BuildParams should be valid but got: ", err)
+	}
+
+	// remove SchemeName - it should NOT be valid anymore
+	bParams.SchemeName = ""
+	if err := bParams.Validate(); err == nil {
+		t.Error("BuildParams should NOT be valid but got no error!")
 	}
 }
