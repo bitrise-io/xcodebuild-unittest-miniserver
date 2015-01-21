@@ -68,6 +68,7 @@ func ExecuteBuildWithParams(buildParams BuildParams) error {
 			buildCmd,
 			buildParams.ProvisioningProfile)
 	}
+	WriteLineToBuildLog(fmt.Sprintf("Xcode Build Command: $ %s", buildCmd))
 
 	cargs := []string{
 		"--login",
