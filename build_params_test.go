@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func MergeBuildParams(t *testing.T) {
+func MergeBuildParamsTest(t *testing.T) {
 	bp1 := BuildParams{
 		ProjectFileDir:      "pfd1",
 		BuildTool:           "bt1",
