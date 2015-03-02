@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os/exec"
+	"syscall"
 )
 
 var (
@@ -48,6 +50,19 @@ func unittestHandler(w http.ResponseWriter, r *http.Request) {
 		err = buildParams.Validate()
 		if err == nil {
 			err = ExecuteBuildWithParams(buildParams)
+			if err != nil {
+				// Did the command fail because of an unsuccessful exit code
+				var waitStatus syscall.WaitStatus
+				if exitError, ok := err.(*exec.ExitError); ok {
+					waitStatus = exitError.Sys().(syscall.WaitStatus)
+					exCode := waitStatus.ExitStatus()
+					fmt.Println("Exit status: ", exCode)
+					if exCode == 65 {
+						WriteLineToBuildLog("=> [!] Error with code 65 (Unable to run app in Simulator) - retrying")
+						err = ExecuteBuildWithParams(buildParams)
+					}
+				}
+			}
 		}
 	}
 
