@@ -3,6 +3,7 @@ xcodebuild-unittest-miniserver (XCUServer)
 
 Mini server (written in Go) to perform Xcode Unit Tests through the command line / terminal.
 
+**Deprecated**: in favor of the more general [cmd-bridge](https://github.com/bitrise-io/cmd-bridge), which works in a similar way but provides more freedom in what command the server should run.
 
 # The problem
 
